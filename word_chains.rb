@@ -1,19 +1,17 @@
 DICTIONARY = File.readlines("dictionary.txt").map(&:chomp)
 
-#Break this down into two methods
 def find_chain(start_word, end_word, dictionary)
   
   raise ArgumentError.new "Both words must have the same length" if start_word.length != end_word.length
   
-  current_words = []
+  current_words = [start_word]
   new_words = []
-  current_words << start_word
   sized_dict = dictionary.select { |d_word| start_word.size == d_word.size }
 
   visited_words = {start_word => nil}
   found_target = false
 
-  #Would need to write a check if theres is no path
+  #Write a check if no path is found
   while !found_target
 
     current_words.each do |word|
@@ -46,7 +44,7 @@ def adjacent_words(word, dictionary)
       counter += 1 if letter != s_word[i]
     end
 
-    true if counter == 1
+    counter == 1
   end
 end
 
@@ -64,4 +62,8 @@ def build_chain(visited_words, word)
   chain
 end
 
-p find_chain(ARGV[0], ARGV[1], DICTIONARY)
+begin
+  p find_chain(ARGV[0], ARGV[1], DICTIONARY)
+rescue ArgumentError => e
+  puts "#{e.message}"
+end
